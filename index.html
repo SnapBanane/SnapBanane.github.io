@@ -1,35 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Julius Gerhardus (@SnapBanane)</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            background-color: #f8d7b6;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <h1>Julius Gerhardus</h1>
-        <p>@SnapBanane</p>
-    </header>
-    <main>
-        <section id="about">
-            <h2>About Me</h2>
-            <p>High school student passionate about robotics and programming. Currently working on exciting projects, including robot football and dynamic color capture.</p>
-        </section>
-        <section id="projects">
-            <h2>Projects</h2>
-            <ul>
-                <li><a href="https://github.com/SnapBanane/robot-football">Robot Football</a> - Developing autonomous football-playing robots.</li>
-                <li><a href="https://github.com/SnapBanane/opencad-models">OpenSCAD Models</a> - Designing 3D models for informatics projects.</li>
-            </ul>
-        </section>
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Check out my GitHub profile: <a href="https://github.com/SnapBanane">https://github.com/SnapBanane</a></p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 Julius Gerhardus</p>
-    </footer>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="absolute top-4 left-4 flex space-x-2">
+        <a href="https://github.com/snapbanane" target="_blank" class="bg-gray-700 text-white p-2 rounded">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://github.com/snapbanane/bohlebots" target="_blank" class="bg-gray-700 text-white p-2 rounded">
+            Bohlebots
+        </a>
+    </div>
+    <div class="absolute top-4 right-4">
+        <div class="relative">
+            <button class="bg-gray-700 text-white p-2 rounded" id="cheatSheetButton">
+                Cheat Sheet's
+            </button>
+            <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg hidden" id="cheatSheetMenu">
+                <a href="https://www.arduino.cc/reference/en/" target="_blank" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Arduino Documentation</a>
+                <a href="https://cloud.bohlebots.de" target="_blank" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Bohlebots Cloud</a>
+                <a href="https://github.com/anto-h" target="_blank" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Anto H GitHub</a>
+                <a href="https://gitlab.com/bohlebots-sarcat" target="_blank" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Bohlebots GitLab</a>
+                <a href="https://cheatography.com/davechild/cheat-sheets/openscad/" target="_blank" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">OpenSCAD Cheat Sheet</a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center max-w-2xl mx-auto">
+        <img alt="Retro computer with a screen displaying text" class="mx-auto mb-4" height="300" src="https://storage.googleapis.com/a1aa/image/hb5gRR3irnIHG5dlA7FsSaoqV7k7NieDP5vlmff1zAUePeBfE.jpg" width="400"/>
+        <h1 class="text-4xl font-bold bg-gray-800 text-white inline-block px-4 py-2 mb-4">Hi there</h1>
+        <p class="text-lg leading-relaxed">
+            Welcome to my coding and hacking playground! 🚀
+        </p>
+        <h2 class="text-2xl font-bold mt-4">About Me</h2>
+        <p class="text-lg leading-relaxed">
+            👨‍💻 Learning the art of coding.<br>
+            🎓 I am 15 years old and I go to the <a href="https://gymhaan.de" target="_blank" class="text-blue-500">Gymhaan School</a>.
+        </p>
+        <h2 class="text-2xl font-bold mt-4">Interests</h2>
+        <p class="text-lg leading-relaxed">
+            🖥️ Hacking: Ethical hacking enthusiast.<br>
+            💻 Coding: Passionate about programming and web development.
+        </p>
+        <h2 class="text-2xl font-bold mt-4">Learning</h2>
+        <p class="text-lg leading-relaxed">
+            Exploring programming languages.<br>
+            Delving into ethical hacking and cybersecurity.
+        </p>
+        <h2 class="text-2xl font-bold mt-4">Contact</h2>
+        <p class="text-lg leading-relaxed">
+            Connect with me on Instagram: <a href="https://www.instagram.com/Juliusmitg" target="_blank" class="text-blue-500">@SnapBanane</a>
+        </p>
+        <p class="text-lg leading-relaxed mt-4">
+            Let's create, learn, and hack together! 🌐💻
+        </p>
+    </div>
+    <script>
+        document.getElementById('cheatSheetButton').addEventListener('click', function() {
+            var menu = document.getElementById('cheatSheetMenu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
 </body>
 </html>

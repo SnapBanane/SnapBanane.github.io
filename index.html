@@ -161,112 +161,53 @@
             transform: translate(8px, 8px);
         }
         
-        /* High specificity btn-ghost overrides */
-        html body .btn-ghost,
-        html body .btn-ghost.rounded-md,
-        html body .btn-ghost.px-3,
-        html body .btn-ghost.py-2,
-        html body .btn-ghost.text-sm {
-            position: relative !important;
-            color: var(--ink) !important;
-            background-color: #f3f4f6 !important; /* gray-100, darker than pure white */
-            border: 2px solid rgba(31,41,55,0.28) !important;
-            padding: .8rem 1.05rem !important;
-            font-size: 1.125rem !important;
-            border-radius: 0 !important;
-            transition: border-color .25s cubic-bezier(0.25, 0.1, 0.25, 1), background-color .25s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
-            text-decoration: none !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-        
-        html body .btn-ghost:hover,
-        html body .btn-ghost.rounded-md:hover,
-        html body .btn-ghost.px-3:hover,
-        html body .btn-ghost.py-2:hover,
-        html body .btn-ghost.text-sm:hover {
-            border-color: rgba(31,41,55,0.4) !important;
-            background-color: #e5e7eb !important; /* gray-200, subtle change */
-            text-decoration: none !important;
-        }
-        
-        /* Clone outline effect for btn-ghost */
-        html body .btn-ghost::after,
-        html body .btn-ghost.rounded-md::after,
-        html body .btn-ghost.px-3::after,
-        html body .btn-ghost.py-2::after,
-        html body .btn-ghost.text-sm::after {
-            content: '' !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            background: transparent !important;
-            border: 2px solid rgba(31,41,55,0.35) !important;
-            border-radius: 0 !important;
-            opacity: 0 !important;
-            transform: translate(0, 0) !important;
-            transition: opacity .3s cubic-bezier(0.25, 0.1, 0.25, 1), transform .3s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
-            z-index: -2 !important;
-            pointer-events: none !important;
-        }
-        
-        html body .btn-ghost:hover::after,
-        html body .btn-ghost.rounded-md:hover::after,
-        html body .btn-ghost.px-3:hover::after,
-        html body .btn-ghost.py-2:hover::after,
-        html body .btn-ghost.text-sm:hover::after {
-            opacity: 1 !important;
-            transform: translate(8px, 8px) !important;
-        }
-        
-        /* Legacy btn-ghost styles for backward compatibility */
+        /* Ghost button component (no !important) */
         .btn-ghost {
-            position: relative;
-            color: var(--ink) !important;
-            background: #f3f4f6 !important; /* gray-100, darker than pure white */
-            border: 2px solid rgba(31,41,55,0.28) !important;
-            padding: .8rem 1.05rem !important;
-            font-size: 1.125rem !important;
-            border-radius: 0 !important;
+            color: var(--ink);
+            background-color: #f3f4f6;
+            border: 2px solid rgba(31,41,55,0.28);
+            padding: .8rem 1.05rem;
+            font-size: 1.125rem;
+            border-radius: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             transition: border-color .25s cubic-bezier(0.25, 0.1, 0.25, 1), background-color .25s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
         .btn-ghost:hover {
-            border-color: rgba(31,41,55,0.4) !important;
-            background: #e5e7eb !important; /* gray-200, subtle change */
+            border-color: rgba(31,41,55,0.4);
+            background-color: #e5e7eb;
         }
-        
-        /* Override specific Tailwind utility classes */
-        .btn-ghost.px-3 {
-            padding-left: 1.05rem !important;
-            padding-right: 1.05rem !important;
+        /* Outline effect for regular ghost buttons */
+        .btn-ghost:not(.arrow-btn) { position: relative; }
+        .btn-ghost:not(.arrow-btn)::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: transparent;
+            border: 2px solid rgba(31,41,55,0.35);
+            border-radius: 0;
+            opacity: 0;
+            transform: translate(0, 0);
+            transition: opacity .3s cubic-bezier(0.25, 0.1, 0.25, 1), transform .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+            z-index: -2;
+            pointer-events: none;
         }
-        .btn-ghost.py-2 {
-            padding-top: .8rem !important;
-            padding-bottom: .8rem !important;
+        .btn-ghost:not(.arrow-btn):hover::after {
+            opacity: 1;
+            transform: translate(8px, 8px);
         }
-        .btn-ghost.text-sm {
-            font-size: 1.125rem !important;
-        }
-        .btn-ghost.rounded-md {
-            border-radius: 0 !important;
-        }
-        
-        /* Special styling for arrow buttons - no outline animation */
+
+        /* Arrow buttons: absolute positioning and no outline */
         .btn-ghost.arrow-btn {
-            background: #f9fafb !important; /* slightly lighter base */
+            position: absolute;
+            background: #f9fafb;
         }
         .btn-ghost.arrow-btn:hover {
-            background: #f3f4f6 !important; /* subtle darkening */
-            border-color: rgba(31,41,55,0.35) !important;
+            background: #f3f4f6;
+            border-color: rgba(31,41,55,0.35);
         }
-        
-        /* Remove outline effect from arrow buttons */
-        .btn-ghost.arrow-btn::after {
-            display: none !important;
-        }
+        .btn-ghost.arrow-btn::after { display: none; }
 
         .grid-overlay {
             position: fixed;
@@ -396,14 +337,14 @@
 
         <section class="mx-auto max-w-6xl py-8 sm:py-12" aria-labelledby="projects-heading">
             <div class="mb-6">
-                <h2 id="projects-heading" class="text-3xl sm:text-4xl font-bold text-center">My repositories</h2>
+                <h2 id="projects-heading" class="text-3xl sm:text-4xl font-bold text-center">&#8226; My Projects &#8226;</h2>
                 <div class="text-center mt-2">
                     <span id="pageInfo" class="text-sm text-gray-600">Page 1</span>
                 </div>
             </div>
             <div class="relative">
                 <!-- Left Arrow - positioned at vertical center of card grid with spacing -->
-                <button id="prevPage" class="absolute -left-16 top-1/2 -translate-y-1/2 btn-ghost arrow-btn text-lg opacity-0 transition-all duration-300 ease-in-out transform scale-0 z-10" disabled>
+                <button id="prevPage" class="absolute top-1/2 -left-16 btn-ghost arrow-btn">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 
@@ -534,28 +475,27 @@
             function updateScrollPosition() {
                 const totalPages = Math.ceil(allRepos.length / cardsPerPage);
                 const translateX = -(currentPage * 100); // Move by 100% of container width per page
-                
                 reposGrid.style.transform = `translateX(${translateX}%)`;
-                
+
                 // Update page info
                 pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
-                
-                // Update arrow visibility
-                if (currentPage > 0) {
-                    prevBtn.disabled = false;
-                    prevBtn.className = 'absolute left-0 top-[140px] -translate-x-12 btn-ghost arrow-btn text-lg opacity-100 transition-all duration-300 ease-in-out transform scale-100 z-10';
-                } else {
-                    prevBtn.disabled = true;
-                    prevBtn.className = 'absolute left-0 top-[140px] -translate-x-12 btn-ghost arrow-btn text-lg opacity-0 transition-all duration-300 ease-in-out transform scale-0 z-10';
-                }
-                
-                if (currentPage < totalPages - 1) {
-                    nextBtn.disabled = false;
-                    nextBtn.className = 'absolute right-0 top-[140px] translate-x-12 btn-ghost arrow-btn text-lg opacity-100 transition-all duration-300 ease-in-out transform scale-100 z-10';
-                } else {
-                    nextBtn.disabled = true;
-                    nextBtn.className = 'absolute right-0 top-[140px] translate-x-12 btn-ghost arrow-btn text-lg opacity-0 transition-all duration-300 ease-in-out transform scale-0 z-10';
-                }
+
+                // Toggle only visibility classes (keep vertical centering from HTML)
+                const showPrev = currentPage > 0;
+                const showNext = currentPage < totalPages - 1;
+
+                prevBtn.disabled = !showPrev;
+                nextBtn.disabled = !showNext;
+
+                prevBtn.classList.toggle('opacity-100', showPrev);
+                prevBtn.classList.toggle('scale-100', showPrev);
+                prevBtn.classList.toggle('opacity-0', !showPrev);
+                prevBtn.classList.toggle('scale-0', !showPrev);
+
+                nextBtn.classList.toggle('opacity-100', showNext);
+                nextBtn.classList.toggle('scale-100', showNext);
+                nextBtn.classList.toggle('opacity-0', !showNext);
+                nextBtn.classList.toggle('scale-0', !showNext);
             }
 
             // Render all repositories at once in pages

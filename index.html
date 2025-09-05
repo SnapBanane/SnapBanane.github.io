@@ -349,10 +349,10 @@
                 </button>
                 
                 <!-- Repository Grid Container with proper overflow clipping -->
-                <div class="overflow-hidden mx-4" style="width: calc(100% - 2rem);">
-                    <div id="reposGrid" class="grid grid-cols-3 gap-6 transition-transform duration-500 ease-in-out min-h-[420px]">
+                <div id="reposViewport" class="overflow-hidden mx-4" style="width: calc(100% - 2rem);">
+                    <div id="reposGrid" class="flex transition-transform duration-500 ease-in-out min-h-[420px]">
                         <!-- Loading state -->
-                        <div class="col-span-3 text-center py-8">
+                        <div class="text-center py-8 flex-none w-full">
                             <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
                             <p class="mt-2 text-gray-600">Loading repositories...</p>
                         </div>
@@ -463,24 +463,39 @@
             const prevBtn = document.getElementById('prevPage');
             const nextBtn = document.getElementById('nextPage');
             const pageInfo = document.getElementById('pageInfo');
+            const viewport = document.getElementById('reposViewport');
 
-            // Truncate description to avoid layout issues
             function truncateDescription(desc, maxLength = 80) {
                 if (!desc) return 'No description available.';
                 if (desc.length <= maxLength) return desc;
                 return desc.substring(0, maxLength).trim() + '...';
             }
 
-            // Update arrow visibility and scroll position
+            function updateWidthsAndTransform() {
+                const totalPages = Math.ceil(allRepos.length / cardsPerPage);
+                const viewportWidth = Math.round(viewport.clientWidth);
+
+                // Set each page's width and add padding for shadow
+                Array.from(reposGrid.children).forEach(page => {
+                    page.style.width = viewportWidth + 'px';
+                    page.style.padding = "24px 12px"; // py-6 px-3
+                    page.style.boxSizing = "border-box";
+                });
+
+                // Set grid min-width to fit all pages
+                reposGrid.style.minWidth = (viewportWidth * totalPages) + "px";
+
+                // Snap transform to integer pixels
+                reposGrid.style.transform = `translate3d(-${currentPage * viewportWidth}px,0,0)`;
+            }
+
             function updateScrollPosition() {
                 const totalPages = Math.ceil(allRepos.length / cardsPerPage);
-                const translateX = -(currentPage * 100); // Move by 100% of container width per page
-                reposGrid.style.transform = `translateX(${translateX}%)`;
+                const viewportWidth = Math.round(viewport.clientWidth);
+                reposGrid.style.transform = `translate3d(-${currentPage * viewportWidth}px,0,0)`;
 
-                // Update page info
                 pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
 
-                // Toggle only visibility classes (keep vertical centering from HTML)
                 const showPrev = currentPage > 0;
                 const showNext = currentPage < totalPages - 1;
 
@@ -498,33 +513,37 @@
                 nextBtn.classList.toggle('scale-0', !showNext);
             }
 
-            // Render all repositories at once in pages
             function renderAllRepos() {
                 reposGrid.innerHTML = '';
-                
                 const totalPages = Math.ceil(allRepos.length / cardsPerPage);
-                
-                // Create pages
+                const viewportWidth = Math.round(viewport.clientWidth);
+
                 for (let page = 0; page < totalPages; page++) {
                     const pageDiv = document.createElement('div');
-                    pageDiv.className = 'grid grid-cols-3 gap-6 w-full flex-shrink-0';
-                    pageDiv.style.minWidth = '100%';
-                    
+                    pageDiv.className = 'flex-none';
+                    pageDiv.style.width = viewportWidth + 'px';
+                    pageDiv.style.padding = "24px 12px"; // py-6 px-3
+                    pageDiv.style.boxSizing = "border-box";
+
+                    const gridDiv = document.createElement('div');
+                    gridDiv.className = 'grid grid-cols-3 gap-6 h-full';
+                    pageDiv.appendChild(gridDiv);
+
                     const startIdx = page * cardsPerPage;
                     const endIdx = Math.min(startIdx + cardsPerPage, allRepos.length);
                     const pageRepos = allRepos.slice(startIdx, endIdx);
-                    
-                    pageRepos.forEach((repo, index) => {
+
+                    pageRepos.forEach(repo => {
                         const repoCard = document.createElement('a');
                         repoCard.className = 'card p-4 block h-48 flex flex-col justify-between';
                         repoCard.href = repo.html_url;
                         repoCard.target = '_blank';
                         repoCard.rel = 'noreferrer';
-                        
+
                         const languageTag = repo.language 
                             ? `<span class="text-xs px-2 py-1 bg-white/70 border border-gray-300 rounded">${repo.language}</span>`
                             : '<span class="text-xs px-2 py-1 bg-white/70 border border-gray-300 rounded">Unknown</span>';
-                        
+
                         repoCard.innerHTML = `
                             <div>
                                 <div class="flex items-start justify-between mb-3">
@@ -534,44 +553,33 @@
                                 <p class="text-sm text-gray-700 line-clamp-4">${truncateDescription(repo.description)}</p>
                             </div>
                         `;
-                        
-                        pageDiv.appendChild(repoCard);
+
+                        gridDiv.appendChild(repoCard);
                     });
-                    
+
                     reposGrid.appendChild(pageDiv);
                 }
-                
-                // Convert to flex layout for horizontal scrolling
-                reposGrid.className = 'flex transition-transform duration-500 ease-in-out min-h-[420px]';
-                
+
+                updateWidthsAndTransform();
                 updateScrollPosition();
             }
 
-            // Fetch repositories from GitHub API
+            // Only one resize handler!
+            window.addEventListener('resize', () => {
+                updateWidthsAndTransform();
+                updateScrollPosition();
+            });
+
             async function fetchRepos() {
                 try {
                     const response = await fetch('https://api.github.com/users/snapbanane/repos?sort=updated&per_page=100');
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
-                    }
-                    
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
                     const repos = await response.json();
-                    
-                    // Filter out forks and sort by last updated
-                    allRepos = repos
-                        .filter(repo => !repo.fork)
-                        .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-                    
+                    allRepos = repos.filter(repo => !repo.fork).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
                     if (allRepos.length === 0) {
-                        reposGrid.innerHTML = `
-                            <div class="w-full text-center py-8">
-                                <p class="text-gray-600">No repositories found.</p>
-                            </div>
-                        `;
+                        reposGrid.innerHTML = `<div class="w-full text-center py-8"><p class="text-gray-600">No repositories found.</p></div>`;
                         return;
                     }
-                    
                     renderAllRepos();
                 } catch (error) {
                     reposGrid.innerHTML = `
@@ -584,7 +592,6 @@
                 }
             }
 
-            // Smooth scrolling event listeners
             prevBtn.addEventListener('click', () => {
                 if (currentPage > 0) {
                     currentPage--;
@@ -600,7 +607,6 @@
                 }
             });
 
-            // Initialize
             fetchRepos();
         })();
 

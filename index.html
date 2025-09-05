@@ -269,6 +269,71 @@
         .tilt {
             transform-style: preserve-3d;
         }
+
+        /* Make repo cards smaller and reduce height */
+        .repo-card {
+            min-height: 92px;
+            height: 92px !important;
+            max-height: 100px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Center and enlarge repo name if no description */
+        .repo-card.no-desc .repo-title {
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            text-align: center !important;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: unset;
+            font-weight: unset;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100%;
+            display: flex !important;
+            gap: 0.25rem;
+        }
+        .repo-card.no-desc .repo-title h3 {
+            width: 100%;
+            text-align: center;
+            font-size: 1.35rem !important;
+            font-weight: 700 !important;
+            margin-bottom: 0.25rem;
+            margin-top: 0.25rem;
+        }
+        .repo-card.no-desc .repo-meta {
+            justify-content: center !important;
+            align-items: center !important;
+            margin: 0 auto 0 auto !important;
+            text-align: center !important;
+            font-size: 1rem !important;
+            width: auto !important;
+            display: flex !important;
+            gap: 0.5rem;
+        }
+        .repo-card.no-desc .repo-desc {
+            display: none !important;
+        }
+        /* Prevent language tag wrapping (e.g. C++) */
+        .repo-meta span,
+        .repo-meta .text-xs {
+            white-space: nowrap;
+        }
+
+        /* Move bottom row up by reducing min-height of grid container */
+        #reposGrid {
+            min-height: 220px !important;
+        }
+
+        /* Adjust arrow button vertical position for new grid height */
+        .arrow-btn {
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+        }
     </style>
 </head>
 <body class="min-h-screen relative overflow-x-hidden">
@@ -344,13 +409,13 @@
             </div>
             <div class="relative">
                 <!-- Left Arrow - positioned at vertical center of card grid with spacing -->
-                <button id="prevPage" class="absolute top-1/2 -left-16 btn-ghost arrow-btn">
+                <button id="prevPage" class="absolute -left-14 btn-ghost arrow-btn text-lg transition-all duration-300 ease-in-out z-10">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 
                 <!-- Repository Grid Container with proper overflow clipping -->
                 <div id="reposViewport" class="overflow-hidden mx-4" style="width: calc(100% - 2rem);">
-                    <div id="reposGrid" class="flex transition-transform duration-500 ease-in-out min-h-[420px]">
+                    <div id="reposGrid" class="flex transition-transform duration-500 ease-in-out min-h-[220px]">
                         <!-- Loading state -->
                         <div class="text-center py-8 flex-none w-full">
                             <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -360,7 +425,7 @@
                 </div>
                 
                 <!-- Right Arrow - positioned at vertical center of card grid with spacing -->
-                <button id="nextPage" class="absolute -right-16 top-1/2 -translate-y-1/2 btn-ghost arrow-btn text-lg transition-all duration-300 ease-in-out z-10">
+                <button id="nextPage" class="absolute -right-14 btn-ghost arrow-btn text-lg transition-all duration-300 ease-in-out z-10">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
@@ -466,7 +531,7 @@
             const viewport = document.getElementById('reposViewport');
 
             function truncateDescription(desc, maxLength = 80) {
-                if (!desc) return 'No description available.';
+                if (!desc) return '';
                 if (desc.length <= maxLength) return desc;
                 return desc.substring(0, maxLength).trim() + '...';
             }
@@ -478,7 +543,7 @@
                 // Set each page's width and add padding for shadow
                 Array.from(reposGrid.children).forEach(page => {
                     page.style.width = viewportWidth + 'px';
-                    page.style.padding = "24px 12px"; // py-6 px-3
+                    page.style.padding = "10px 4px";
                     page.style.boxSizing = "border-box";
                 });
 
@@ -522,11 +587,11 @@
                     const pageDiv = document.createElement('div');
                     pageDiv.className = 'flex-none';
                     pageDiv.style.width = viewportWidth + 'px';
-                    pageDiv.style.padding = "24px 12px"; // py-6 px-3
+                    pageDiv.style.padding = "10px 4px";
                     pageDiv.style.boxSizing = "border-box";
 
                     const gridDiv = document.createElement('div');
-                    gridDiv.className = 'grid grid-cols-3 gap-6 h-full';
+                    gridDiv.className = 'grid grid-cols-3 gap-3 h-full';
                     pageDiv.appendChild(gridDiv);
 
                     const startIdx = page * cardsPerPage;
@@ -534,30 +599,51 @@
                     const pageRepos = allRepos.slice(startIdx, endIdx);
 
                     pageRepos.forEach(repo => {
+                        // Always hide SnapBanane.github.io and SnapBanane
+                        if (
+                            repo.name.toLowerCase() === "snapbanane.github.io" ||
+                            repo.name.toLowerCase() === "snapbanane"
+                        ) return;
+
                         const repoCard = document.createElement('a');
-                        repoCard.className = 'card p-4 block h-48 flex flex-col justify-between';
+                        repoCard.className = 'card repo-card p-2 block flex flex-col justify-between';
                         repoCard.href = repo.html_url;
                         repoCard.target = '_blank';
                         repoCard.rel = 'noreferrer';
 
                         const languageTag = repo.language 
-                            ? `<span class="text-xs px-2 py-1 bg-white/70 border border-gray-300 rounded">${repo.language}</span>`
-                            : '<span class="text-xs px-2 py-1 bg-white/70 border border-gray-300 rounded">Unknown</span>';
+                            ? `<span class="text-xs px-2 py-0.5 bg-white/70 border border-gray-300 rounded">${repo.language}</span>`
+                            : '<span class="text-xs px-2 py-0.5 bg-white/70 border border-gray-300 rounded">Unknown</span>';
+
+                        // Show stars if > 0
+                        const stars = repo.stargazers_count > 0
+                            ? `<span class="ml-2 text-xs text-yellow-600 flex items-center gap-1"><i class="fas fa-star"></i> ${repo.stargazers_count}</span>`
+                            : '';
+
+                        // Only show description if available
+                        const desc = truncateDescription(repo.description, 60);
+                        const hasDesc = !!desc;
+
+                        // Add .no-desc class if no description
+                        if (!hasDesc) repoCard.classList.add('no-desc');
 
                         repoCard.innerHTML = `
-                            <div>
-                                <div class="flex items-start justify-between mb-3">
-                                    <h3 class="font-semibold text-base pr-2">${repo.name}</h3>
-                                    ${languageTag}
+                            <div class="flex flex-col h-full w-full">
+                                <div class="flex items-start justify-between mb-1 repo-title${!hasDesc ? ' justify-center' : ''}">
+                                    <h3 class="font-semibold text-sm pr-2 w-full${!hasDesc ? ' text-center' : ''}">${repo.name}</h3>
+                                    <div class="flex items-center repo-meta">${languageTag}${stars}</div>
                                 </div>
-                                <p class="text-sm text-gray-700 line-clamp-4">${truncateDescription(repo.description)}</p>
+                                ${hasDesc ? `<p class="repo-desc text-xs text-gray-700 line-clamp-3 mt-1">${desc}</p>` : ''}
                             </div>
                         `;
 
                         gridDiv.appendChild(repoCard);
                     });
 
-                    reposGrid.appendChild(pageDiv);
+                    // Only add page if it has visible cards
+                    if (gridDiv.children.length > 0) {
+                        reposGrid.appendChild(pageDiv);
+                    }
                 }
 
                 updateWidthsAndTransform();
@@ -575,7 +661,14 @@
                     const response = await fetch('https://api.github.com/users/snapbanane/repos?sort=updated&per_page=100');
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
                     const repos = await response.json();
-                    allRepos = repos.filter(repo => !repo.fork).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+                    // Sort by last activity (pushed_at)
+                    allRepos = repos
+                        .filter(repo => !repo.fork)
+                        .filter(repo =>
+                            repo.name.toLowerCase() !== "snapbanane.github.io" &&
+                            repo.name.toLowerCase() !== "snapbanane"
+                        )
+                        .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
                     if (allRepos.length === 0) {
                         reposGrid.innerHTML = `<div class="w-full text-center py-8"><p class="text-gray-600">No repositories found.</p></div>`;
                         return;

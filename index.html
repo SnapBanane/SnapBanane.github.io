@@ -105,12 +105,12 @@
             font-family: var(--serif); font-weight: 400; letter-spacing: -.034em; line-height: 1.02;
             font-size: clamp(2.7rem, 7.3vw, 6.4rem); margin: 22px 0 0; text-align: left; display: inline-block;
         }
-        h1 .line { display: block; overflow: hidden; padding-bottom: .16em; margin-bottom: -.16em; }
+        h1 .line { display: block; }
         h1 .line:nth-child(2) { margin-left: 1.5em; }
-        h1 .line > span { display: inline-block; transform: translateY(112%); animation: lineUp 1.3s var(--ease) forwards; }
+        h1 .line > span { display: inline-block; opacity: 0; transform: translateY(.28em); filter: blur(10px); animation: lineUp 1.6s var(--ease) forwards; }
         h1 .line:nth-child(1) > span { animation-delay: 1.3s; }
         h1 .line:nth-child(2) > span { animation-delay: 1.48s; }
-        @keyframes lineUp { to { transform: none; } }
+        @keyframes lineUp { to { opacity: 1; transform: none; filter: none; } }
         @keyframes fade { from { opacity: 0; } }
         @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
 
@@ -124,6 +124,21 @@
         a.leader:hover .dots { opacity: 1; }
         a.leader:hover .t { color: var(--ball); transform: translateX(-4px); }
 
+
+        /* ================= Robot arm: pinned while you scroll, the scroll position drives it ================= */
+        .arm-scene { height: 320vh; }
+        .arm-stage { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(24px, 5vw, 80px); align-items: center; }
+        .arm-text h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 4.4vw, 3.6rem); line-height: 1.04; letter-spacing: -.032em; margin: 0 0 20px; }
+        .arm-text p { color: var(--muted); margin: 0; max-width: 44ch; font-size: 1.04rem; }
+        .readout { margin: 34px 0 0; max-width: 300px; font-family: var(--mono); font-size: .82rem; }
+        .readout div { display: flex; justify-content: space-between; padding: 9px 0; border-top: 1px solid var(--line); }
+        .readout div:last-child { border-bottom: 1px solid var(--line); }
+        .readout dt { color: var(--faint); }
+        .readout dd { margin: 0; font-variant-numeric: tabular-nums; }
+        #arm { width: 100%; max-height: 78vh; overflow: visible; }
+        #arm .ink { fill: var(--bg); stroke: rgba(245,242,234,.78); stroke-width: 1.3; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+        #arm .thin { fill: none; stroke: rgba(245,242,234,.3); stroke-width: 1; vector-effect: non-scaling-stroke; }
+        #arm .dot { fill: rgba(245,242,234,.85); }
 
         /* ================= Sections ================= */
         section { padding-top: clamp(110px, 17vh, 190px); }
@@ -197,8 +212,11 @@
         }
         /* the hero's arc rises once as the page opens; the light sits behind the horizon */
         .hero { --top: 66vh; --top: 66svh; --sun: 36%; --glow: .6; }
-        .hero::before { animation: dawn 3.4s var(--ease) .3s both; }
-        @keyframes dawn { from { opacity: 0; transform: translateY(80px); } }
+        @property --sun { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
+        @property --glow { syntax: "<number>"; inherits: true; initial-value: 0; }
+        .hero::before { animation: dawn 4.2s var(--ease) .3s both, orbit 30s ease-in-out 4.5s infinite alternate; }
+        @keyframes dawn { from { opacity: 0; transform: translateY(80px); --sun: 118%; --glow: 0; } }
+        @keyframes orbit { to { --sun: 50%; } }
         .closing > * { position: relative; }
         .closing h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2.6rem, 8vw, 6.6rem); line-height: 1; letter-spacing: -.036em; margin: 0; }
         .closing h2 em { font-style: italic; }
@@ -212,6 +230,9 @@
 
         /* ================= Responsive ================= */
         @media (max-width: 900px) {
+            .arm-stage { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); align-content: center; gap: 12px; padding-top: 76px; }
+            #arm { max-height: 46vh; max-height: 46svh; }
+            .readout { margin-top: 18px; }
             .sec-head { grid-template-columns: 1fr; gap: 14px; }
             .stack, .credit, .repo-list, .status, .about { margin-left: 0; }
             .about { grid-template-columns: 1fr; }
@@ -231,7 +252,7 @@
             .dateline { font-size: .7rem; letter-spacing: .13em; }
         }
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: .001s !important; animation-delay: 0s !important; transition-duration: .001s !important; transition-delay: 0s !important; }
+            *, *::before, *::after { animation-duration: .001s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; transition-delay: 0s !important; }
             html { scroll-behavior: auto; }
         }
     </style>
@@ -268,6 +289,43 @@
                     <li style="--i:3"><a class="leader" href="#about"><span class="n">[4]</span><span class="dots"></span><span class="t">About</span></a></li>
                 </ol>
             </div>
+
+    <!-- ============ ROBOT ARM ============ -->
+    <div class="arm-scene" id="armScene">
+        <div class="arm-stage wrap">
+            <div class="arm-text">
+                <h2>Robotics, and the informatics behind it.</h2>
+                <p>I work where code meets hardware: control loops, kinematics, game strategy and the tools that make them debuggable. Keep scrolling to run the arm. Its joint angles are solved live from where the gripper needs to be.</p>
+                <dl class="readout" aria-hidden="true">
+                    <div><dt>Shoulder</dt><dd id="rShoulder">0°</dd></div>
+                    <div><dt>Elbow</dt><dd id="rElbow">0°</dd></div>
+                    <div><dt>Gripper</dt><dd id="rGrip">open</dd></div>
+                </dl>
+            </div>
+            <svg id="arm" viewBox="20 110 560 350" role="img" aria-label="Line drawing of a robot arm that picks up a ball and sets it on a stand as you scroll">
+                <line class="thin" x1="40" y1="440" x2="560" y2="440" style="stroke: rgba(245,242,234,.55)"/>
+                <path class="thin" d="M60 440l-10 10M100 440l-10 10M140 440l-10 10M180 440l-10 10M220 440l-10 10M260 440l-10 10M300 440l-10 10M340 440l-10 10M380 440l-10 10M420 440l-10 10M460 440l-10 10M500 440l-10 10M540 440l-10 10"/>
+                <rect class="ink" x="438" y="392" width="44" height="48"/>
+                <path class="ink" d="M258 440h84l-14-34h-56z"/>
+                <circle id="ball" r="10" fill="#ff8a3d"/>
+                <g id="j1">
+                    <rect class="ink" x="-15" y="-15" width="200" height="30" rx="15"/>
+                    <line class="thin" x1="24" y1="0" x2="146" y2="0"/>
+                    <circle class="ink" r="14"/><circle class="dot" r="2.5"/>
+                    <g id="j2">
+                        <rect class="ink" x="-12" y="-12" width="174" height="24" rx="12"/>
+                        <line class="thin" x1="20" y1="0" x2="130" y2="0"/>
+                        <circle class="ink" r="11"/><circle class="dot" r="2.5"/>
+                        <g id="j3">
+                            <rect class="ink" x="6" y="-16" width="11" height="32" rx="2"/>
+                            <path id="fa" class="ink" d="M17 0h29"/><path id="fb" class="ink" d="M17 0h29"/>
+                            <circle class="ink" r="7"/><circle class="dot" r="2"/>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </div>
 
     <!-- ============ WORK ============ -->
     <section id="work" class="wrap">
@@ -429,6 +487,44 @@ const io = 'IntersectionObserver' in window
     : null;
 const reveal = el => io ? io.observe(el) : el.classList.add('in');
 document.querySelectorAll('.reveal').forEach(reveal);
+
+/* ---------- Robot arm: scroll position -> gripper target -> joint angles (two-link inverse kinematics) ---------- */
+(() => {
+    const scene = document.getElementById('armScene'), $ = id => document.getElementById(id);
+    const S = [300, 392], L1 = 170, L2 = 150, G = 38;                 // shoulder, link lengths, wrist-to-pinch distance (drawing units)
+    // scroll progress, gripper x, y, grip (0 open .. 1 closed): hover, pick, lift, carry, place, release, retreat
+    const K = [[0, 390, 200, 0], [.18, 150, 300, 0], [.34, 150, 430, 0], [.42, 150, 430, 1], [.58, 150, 250, 1], [.76, 460, 250, 1], [.88, 460, 382, 1], [.93, 460, 382, 0], [1, 400, 220, 0]];
+    const deg = r => r * 180 / Math.PI;
+    let queued = false;
+
+    function render() {
+        queued = false;
+        const p = Math.min(1, Math.max(0, (scrollY - scene.offsetTop) / (scene.offsetHeight - innerHeight)));
+        let i = 1; while (i < K.length - 1 && p > K[i][0]) i++;
+        const a = K[i - 1], b = K[i], u = Math.min(1, Math.max(0, (p - a[0]) / (b[0] - a[0]))), t = u * u * (3 - 2 * u);
+        const x = a[1] + (b[1] - a[1]) * t, y = a[2] + (b[2] - a[2]) * t, grip = a[3] + (b[3] - a[3]) * t;
+
+        const dx = x - S[0], dy = y - G - S[1], d = Math.min(L1 + L2 - 1, Math.hypot(dx, dy));
+        const q = Math.acos((d * d - L1 * L1 - L2 * L2) / (2 * L1 * L2)), dir = Math.atan2(dy, dx);
+        let t1, t2;                                                    // two solutions: keep the one with the elbow up
+        for (const q2 of [q, -q]) { const c = dir - Math.atan2(L2 * Math.sin(q2), L1 + L2 * Math.cos(q2)); if (t1 === undefined || Math.sin(c) < Math.sin(t1)) { t1 = c; t2 = q2; } }
+        console.assert(Math.hypot(L1 * Math.cos(t1) + L2 * Math.cos(t1 + t2) - dx, L1 * Math.sin(t1) + L2 * Math.sin(t1 + t2) - dy) < 1, 'arm misses its target');
+
+        $('j1').setAttribute('transform', `translate(${S}) rotate(${deg(t1)})`);
+        $('j2').setAttribute('transform', `translate(${L1},0) rotate(${deg(t2)})`);
+        $('j3').setAttribute('transform', `translate(${L2},0) rotate(${90 - deg(t1) - deg(t2)})`);   // gripper always points down
+        const f = 14 - 3.5 * grip;
+        $('fa').setAttribute('transform', `translate(0,${-f})`); $('fb').setAttribute('transform', `translate(0,${f})`);
+        const ball = p < .42 ? [150, 430] : p < .905 ? [x, y] : [460, 382];
+        $('ball').setAttribute('cx', ball[0]); $('ball').setAttribute('cy', ball[1]);
+        $('rShoulder').textContent = Math.round(((-deg(t1)) % 360 + 360) % 360) + '°';   // measured up from the floor, 0-360
+        $('rElbow').textContent = Math.round(Math.abs(deg(t2))) + '°';
+        $('rGrip').textContent = grip > .5 ? 'closed' : 'open';
+    }
+    const ask = () => { if (!queued) { queued = true; requestAnimationFrame(render); } };
+    addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
+    render();
+})();
 
 /* ---------- Open source list (live from GitHub) ---------- */
 (() => {

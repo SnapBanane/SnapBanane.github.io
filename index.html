@@ -517,8 +517,9 @@ const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const SH = [.0856, .0836], EL = [.2229, -.0257], WR = [.2496, .1541];
 const L1 = Math.hypot(EL[0] - SH[0], EL[1] - SH[1]), L2 = Math.hypot(WR[0] - EL[0], WR[1] - EL[1]);
 const PHI1 = Math.atan2(EL[0] - SH[0], EL[1] - SH[1]), PHI2 = Math.atan2(WR[0] - EL[0], WR[1] - EL[1]);
-const GRIP = .11;                                                      // wrist pivot to the point between the fingertips
-const FLOOR = -.0345, BALL_R = .013, STAND_H = .05;
+// point between the finger teeth, measured from the wrist pivot: down, sideways (the gripper sits off the arm's centre plane), forward
+const GRIP = .1146, PX = .0161, PZ = .003, TEETH_GAP = .017;          // gap between the teeth in the model's rest pose
+const FLOOR = -.0345, BALL_R = .0095, STAND_H = .05;
 const BALL_Y = FLOOR + BALL_R, STAND_Y = FLOOR + STAND_H + BALL_R, PICK = 55, PLACE = -55, REACH = .2;
 // progress, base yaw (deg), reach (m), height (m), grip (0 open .. 1 closed)
 const K = [[0, 18, .17, .13, 0], [.18, PICK, REACH, BALL_Y + .06, 0], [.28, PICK, REACH, BALL_Y, 0], [.36, PICK, REACH, BALL_Y, 1],
@@ -537,7 +538,7 @@ async function loadParts(url) {                                        // tiny G
 }
 
 function solve(r, y) {                                                 // planar two-link IK, elbow up
-    const wz = r, wy = y + GRIP, dz = wz - SH[1], dy = wy - SH[0];
+    const wz = r - PZ, wy = y + GRIP, dz = wz - SH[1], dy = wy - SH[0];
     const d = clamp(Math.hypot(dz, dy), Math.abs(L1 - L2) + 1e-4, L1 + L2 - 1e-4), a = Math.atan2(dy, dz);
     const b = Math.acos(clamp((L1 * L1 + d * d - L2 * L2) / (2 * L1 * d), -1, 1));
     let best;
@@ -592,10 +593,11 @@ try {
     const ball = new THREE.Mesh(new THREE.SphereGeometry(BALL_R, 48, 32), orange); ball.castShadow = true; world.add(ball);
     const stand = new THREE.Mesh(new THREE.CylinderGeometry(.018, .024, STAND_H, 48), graphite);
     const standCap = new THREE.Mesh(new THREE.CylinderGeometry(.022, .022, .004, 48), alu);
-    const polar = (deg_, r, y) => new THREE.Vector3(r * Math.sin(rad(deg_)), y, r * Math.cos(rad(deg_)));
+    // where the pinch point lands for a base angle, reach and height (includes the gripper's sideways offset)
+    const polar = (deg_, r, y) => { const c = Math.cos(rad(deg_)), n = Math.sin(rad(deg_)); return new THREE.Vector3(PX * c + r * n, y, -PX * n + r * c); };
     stand.position.copy(polar(PLACE, REACH, FLOOR + STAND_H / 2)); standCap.position.copy(polar(PLACE, REACH, FLOOR + STAND_H - .002));
     stand.castShadow = stand.receiveShadow = standCap.castShadow = true; world.add(stand, standCap);
-    const pinch = new THREE.Object3D(); pinch.position.set(0, -GRIP, 0); wr.add(pinch);
+    const pinch = new THREE.Object3D(); pinch.position.set(PX, -GRIP, PZ); wr.add(pinch);
 
     const camera = new THREE.PerspectiveCamera(26, 1, .05, 10), look = new THREE.Vector3(0, .14, .03), lift = () => camera.aspect >= 1 ? .06 : 0       // aimed above the arm so it sits low, under the captions;
     function size() {
@@ -613,8 +615,8 @@ try {
         const a = K[i - 1], b = K[i], t = ease(clamp((p - a[0]) / (b[0] - a[0]))), mix = j => a[j] + (b[j] - a[j]) * t;
         const yawDeg = mix(1), r = mix(2), y = mix(3), grip = mix(4), ik = solve(r, y);
         yaw.rotation.y = rad(yawDeg); sh.rotation.x = ik.s; el.rotation.x = ik.e; wr.rotation.x = ik.w;
-        const close = .0042 * grip;
-        parts[6].position.z = fingerRest[0] - close; parts[7].position.z = fingerRest[1] + close;
+        const open = (2 * BALL_R - TEETH_GAP) / 2 + .005 * (1 - grip);  // closed: teeth just touch the ball; open: 5 mm of clearance each side
+        parts[6].position.z = fingerRest[0] + open; parts[7].position.z = fingerRest[1] - open;
 
         world.updateMatrixWorld(true);
         const held = p >= .36 && p < .82;

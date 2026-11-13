@@ -3,21 +3,54 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Julius Gerhardus | Software for robots</title>
-    <meta name="description" content="Julius Gerhardus writes strategy software and tooling for BohleBots, a RoboCup Small Size League team in Division B: TypeScript game strategy, Python tooling and C++ robot firmware." />
+    <title>Julius Gerhardus | Robotics software and team lead at BohleBots</title>
+    <meta name="description" content="Julius Gerhardus is a student from Germany and team lead of BohleBots, a RoboCup Small Size League team (Division B). He writes the robots' strategy software, tooling and C++ firmware." />
+    <meta name="author" content="Julius Gerhardus" />
     <link rel="canonical" href="https://snapbanane.github.io/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Julius Gerhardus | Software for robots" />
-    <meta property="og:description" content="Strategy software, tooling and firmware for BohleBots in the RoboCup Small Size League, Division B." />
+    <meta property="og:title" content="Julius Gerhardus | Robotics software and team lead at BohleBots" />
+    <meta property="og:site_name" content="Julius Gerhardus" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="profile:first_name" content="Julius" />
+    <meta property="profile:last_name" content="Gerhardus" />
+    <meta property="og:description" content="Team lead and strategy developer at BohleBots, RoboCup Small Size League Division B: strategy software, tooling and robot firmware." />
     <meta property="og:url" content="https://snapbanane.github.io/" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Julius Gerhardus",
-      "description": "Student robotics developer writing strategy software for BohleBots in the RoboCup Small Size League, Division B.",
-      "url": "https://snapbanane.github.io/",
-      "sameAs": ["https://github.com/SnapBanane"]
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://snapbanane.github.io/#person",
+          "name": "Julius Gerhardus",
+          "givenName": "Julius",
+          "familyName": "Gerhardus",
+          "alternateName": "SnapBanane",
+          "url": "https://snapbanane.github.io/",
+          "image": "https://snapbanane.github.io/og-image.png",
+          "jobTitle": "Team lead, BohleBots SSL",
+          "description": "Student from Germany and team lead of BohleBots, a RoboCup Small Size League team (Division B), writing the robots' strategy software, tooling and firmware.",
+          "memberOf": { "@type": "SportsTeam", "name": "BohleBots", "sport": "RoboCup Small Size League" },
+          "affiliation": { "@type": "EducationalOrganization", "name": "Gymnasium Haan", "url": "https://gymhaan.de" },
+          "nationality": { "@type": "Country", "name": "Germany" },
+          "knowsAbout": ["Robotics", "RoboCup", "Robot soccer strategy", "TypeScript", "C++", "Python", "ESP32 firmware", "PID control", "Machine learning", "Team leadership"],
+          "sameAs": ["https://github.com/SnapBanane"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://snapbanane.github.io/#website",
+          "url": "https://snapbanane.github.io/",
+          "name": "Julius Gerhardus",
+          "inLanguage": "en",
+          "publisher": { "@id": "https://snapbanane.github.io/#person" }
+        },
+        {
+          "@type": "ProfilePage",
+          "url": "https://snapbanane.github.io/",
+          "name": "Julius Gerhardus",
+          "mainEntity": { "@id": "https://snapbanane.github.io/#person" }
+        }
+      ]
     }
     </script>
 
@@ -27,6 +60,7 @@
     <meta name="color-scheme" content="dark">
 
     <meta property="og:image" content="https://snapbanane.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <script>document.documentElement.classList.add('js')</script>
 
     <style>
@@ -223,6 +257,7 @@
         .closing h2 em { font-style: italic; }
         .closing p { color: var(--muted); margin: 26px auto 34px; max-width: 42ch; }
         .closing .pill { display: inline-block; font-size: .95rem; padding: 13px 22px; }
+        .closing .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
         footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 30px 0 38px; border-top: 1px solid var(--line); font: 400 .74rem/1.5 var(--mono); letter-spacing: .04em; color: var(--faint); }
         footer nav { display: flex; gap: 24px; }
@@ -315,48 +350,55 @@
         <div class="work">
             <div class="row reveal">
                 <span class="n">01</span>
+                <h3>Team lead, BohleBots</h3>
+                <p>I lead our school's robotics team: planning the season, splitting the work between hardware and software, and keeping everyone on track for competition day.</p>
+                <span class="meta">Leadership<br>BohleBots SSL</span>
+                <span></span>
+            </div>
+            <div class="row reveal">
+                <span class="n">02</span>
                 <h3>SSL strategy</h3>
                 <p>Game strategy for BohleBots: interception, shooting to a point, defender cover, obstacle-aware ball approach, and passing on the way.</p>
                 <span class="meta">TypeScript<br>Team repo, private</span>
                 <span></span>
             </div>
             <div class="row reveal">
-                <span class="n">02</span>
+                <span class="n">03</span>
                 <h3>Pass prediction</h3>
                 <p>A gradient-boosted tree model that estimates whether a pass will succeed, trained on recorded league matches.</p>
                 <span class="meta">Python<br>Prototype</span>
                 <span></span>
             </div>
             <div class="row reveal">
-                <span class="n">03</span>
+                <span class="n">04</span>
                 <h3>Ra bridge</h3>
                 <p>Lets the strategy software drive our ESP32 robot over UDP with minimal delay. Speed scaling is calibrated against the vision camera, and the camera stands in for the light barrier the robot doesn't have.</p>
                 <span class="meta">Python<br>Standard library only</span>
                 <span></span>
             </div>
             <a class="row reveal" href="https://github.com/bohlebots-pompeii/MB_Circuit_2026" target="_blank" rel="noreferrer">
-                <span class="n">04</span>
+                <span class="n">05</span>
                 <h3>Robot firmware</h3>
                 <p>Firmware for our ESP32 robot: a dedicated motion controller with tuned PID loops, positioning, world state and remote control over Wi-Fi.</p>
                 <span class="meta">C++20 · PlatformIO<br>2026</span>
                 <span class="go" aria-hidden="true">↗</span>
             </a>
             <div class="row reveal">
-                <span class="n">05</span>
+                <span class="n">06</span>
                 <h3>Mitauri</h3>
                 <p>A personal AI assistant that lives in Discord DMs and runs on my own machine, built from modules that can be switched on and off.</p>
                 <span class="meta">Python · AI<br>Private</span>
                 <span></span>
             </div>
             <a class="row reveal" href="https://github.com/SnapBanane/AirDropReworked" target="_blank" rel="noreferrer">
-                <span class="n">06</span>
+                <span class="n">07</span>
                 <h3>AirDrop Reworked</h3>
                 <p>AirDrop-style file sharing that works across Windows, Android and macOS.</p>
                 <span class="meta">Python<br>2026</span>
                 <span class="go" aria-hidden="true">↗</span>
             </a>
             <a class="row reveal" href="https://github.com/SnapBanane/DoomStyle" target="_blank" rel="noreferrer">
-                <span class="n">07</span>
+                <span class="n">08</span>
                 <h3>DoomStyle</h3>
                 <p>A retro first-person shooter for the browser, written in plain JavaScript.</p>
                 <span class="meta">JavaScript<br>2025</span>
@@ -418,11 +460,12 @@
         </div>
         <div class="about">
             <div class="reveal">
-                <p class="lead">I'm a student in Germany and a developer on BohleBots SSL. I started in RoboCup Junior and now play in the Small Size League, where the robots are faster and the software does far more of the work.</p>
+                <p class="lead">I'm Julius Gerhardus, a student in Germany and team lead of BohleBots SSL. I started in RoboCup Junior and now play in the Small Size League, where the robots are faster and the software does far more of the work.</p>
                 <p class="body">Most of my time goes into strategy code and the tools around it. I also write firmware in C++, build things in Python, and keep a few side projects going when the robots are charging.</p>
             </div>
             <dl class="facts reveal" style="--i:1">
                 <div><dt>Team</dt><dd>BohleBots SSL</dd></div>
+                <div><dt>Role</dt><dd>Team lead</dd></div>
                 <div><dt>League</dt><dd>RoboCup SSL, Division B</dd></div>
                 <div><dt>Before</dt><dd>RoboCup Junior Soccer</dd></div>
                 <div><dt>School</dt><dd><a href="https://gymhaan.de" target="_blank" rel="noreferrer">Gymnasium Haan</a></dd></div>
@@ -433,14 +476,15 @@
 
     <div class="closing">
          <h2 class="reveal">See you <em>on the field.</em></h2>
-        <p class="reveal" style="--i:1">The public code is on GitHub, and that's the best place to reach me.</p>
-        <div class="reveal" style="--i:2"><a class="pill pill--light" href="https://github.com/SnapBanane" target="_blank" rel="noreferrer">github.com/SnapBanane ↗</a></div>
+        <p class="reveal" style="--i:1">For sponsoring, internships or questions about the team, email me. The public code is on GitHub.</p>
+        <div class="reveal cta" style="--i:2"><a class="pill pill--light js-mail" href="#about">julius [at] gerhardus.com</a> <a class="pill" href="https://github.com/SnapBanane" target="_blank" rel="noreferrer">GitHub ↗</a></div>
     </div>
 </main>
 
 <footer class="wrap">
     <span>© <span id="year"></span> Julius Gerhardus</span>
     <nav aria-label="Footer">
+        <a class="js-mail" href="#about">Email</a>
         <a href="https://github.com/SnapBanane" target="_blank" rel="noreferrer">GitHub</a>
         <a href="https://ssl.robocup.org" target="_blank" rel="noreferrer">RoboCup SSL</a>
         <a href="#top">Top ↑</a>
@@ -449,6 +493,7 @@
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('.js-mail').forEach(a => { const m = ['julius', 'gerhardus.com'].join('@'); a.href = 'mailto:' + m; if (a.textContent.includes('[at]')) a.textContent = m; });
 
 /* ---------- Nav state ---------- */
 (() => {

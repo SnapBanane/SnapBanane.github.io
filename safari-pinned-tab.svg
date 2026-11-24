@@ -1,6 +1,6 @@
-<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <!-- Single-color for Safari mask icons -->
-  <polygon fill="#000000" points="32,8 52,20 32,32 12,20"/>
-  <polygon fill="#000000" points="12,20 32,32 32,56 12,44"/>
-  <polygon fill="#000000" points="32,32 52,20 52,44 32,56"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- single colour for Safari pinned tabs: ball rising over the horizon -->
+  <defs><clipPath id="sky"><path d="M-4 47 Q32 24 68 47 V-4 H-4 Z"/></clipPath></defs>
+  <circle cx="32" cy="34" r="15" clip-path="url(#sky)"/>
+  <path d="M-4 49 Q32 26 68 49" fill="none" stroke="#000" stroke-width="3.5"/>
 </svg>

@@ -18,7 +18,7 @@ assets/
   fonts/                self-hosted web fonts (no Google Fonts requests)
   models/robot-arm.glb  robot arm geometry
   vendor/               three.js and helpers (MIT)
-favicon.svg, safari-pinned-tab.svg, og-image.png, robots.txt, sitemap.xml
+favicon.svg, safari-pinned-tab.svg, apple-touch-icon.png, og-image.png, robots.txt, sitemap.xml
 googleebfb65dc5f2a80e2.html   Google Search Console verification, keep at root
 ```
 

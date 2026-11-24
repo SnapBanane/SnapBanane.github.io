@@ -98,6 +98,7 @@ a.leader:hover .t { color: var(--ball); transform: translateX(-4px); }
 .arm-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; justify-items: center; padding: clamp(84px, 13vh, 130px) 20px clamp(24px, 5vh, 48px); }
 .arm-caps { position: relative; width: min(760px, 100%); height: clamp(150px, 21vh, 200px); text-align: center; }
 .arm-cap { position: absolute; inset: 0; will-change: opacity, transform, filter; }
+.arm-cap + .arm-cap { opacity: 0; }                                  /* until arm.js drives them (or if WebGL fails), show only the first caption */
 .arm-cap h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(3rem, 8vw, 6.4rem); line-height: 1; letter-spacing: -.04em; margin: 0; }
 .arm-cap p { color: var(--muted); font-size: clamp(1rem, 1.5vw, 1.15rem); margin: 18px auto 0; max-width: 42ch; }
 .arm-view { position: absolute; inset: 0; }                       /* full-bleed behind the captions */

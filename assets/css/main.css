@@ -182,16 +182,17 @@ a.row:hover .go { color: var(--text); transform: translate(3px, -3px); }
         rgba(190,120,150,.14) calc(100% + 40px),
         rgba(255,138,61,.07) calc(100% + 85px),
         rgba(255,138,61,0) calc(100% + 150px)),
-        radial-gradient(ellipse 30vmax 13vmax at var(--sun, 50%) var(--top), rgba(255,206,160,var(--glow, 0)), rgba(255,138,61,calc(var(--glow, 0) * .3)) 38%, transparent 72%);
+        radial-gradient(ellipse 30vmax 13vmax at calc(50% + var(--r) * sin(var(--a, 0deg))) calc(var(--top) + var(--r) * (1 - cos(var(--a, 0deg)))), rgba(255,206,160,var(--glow, 0)), rgba(255,138,61,calc(var(--glow, 0) * .3)) 38%, transparent 72%);
 }
 /* the hero's arc rises once as the page opens; the light sits behind the horizon */
-.hero { --top: 66vh; --top: 66svh; --sun: 36%; --glow: .6; }
-@property --sun { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
+/* --a is the glow's angle on the arc's circle (0deg = the top), so it always rides the curve */
+.hero { --top: 66vh; --top: 66svh; --a: -5deg; --glow: .6; }
+@property --a { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
 @property --glow { syntax: "<number>"; inherits: true; initial-value: 0; }
 .hero::before { animation: dawn 2.2s var(--ease) both, orbit 30s ease-in-out 2.2s infinite alternate; }
-@keyframes dawn { from { opacity: 0; transform: translateY(80px); --sun: 118%; --glow: 0; } }
-@keyframes orbit { to { --sun: 50%; } }
-.hero.follow::before { animation: dawn 2.2s var(--ease) both; }   /* mouse drives --sun (main.js); dropping orbit lets the inline value through */
+@keyframes dawn { from { opacity: 0; transform: translateY(80px); --a: 24deg; --glow: 0; } }
+@keyframes orbit { to { --a: 0deg; } }
+.hero.follow::before { animation: dawn 2.2s var(--ease) both; }   /* mouse drives --a (main.js); dropping orbit lets the inline value through */
 .closing > * { position: relative; }
 .closing h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2.6rem, 8vw, 6.6rem); line-height: 1; letter-spacing: -.036em; margin: 0; }
 .closing h2 em { font-style: italic; }

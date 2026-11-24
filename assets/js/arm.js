@@ -50,13 +50,13 @@ try {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
     renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.2;
+    renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.05;   // neutral keeps the white paint white without ACES clipping it flat
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     const world = new THREE.Scene();
     const pmrem = new THREE.PMREMGenerator(renderer);
-    world.environment = pmrem.fromScene(new RoomEnvironment(), .04).texture; world.environmentIntensity = .55;
-    const key = new THREE.DirectionalLight(0xfff4e8, 2.6); key.position.set(.5, 1.1, .7); key.castShadow = true;
+    world.environment = pmrem.fromScene(new RoomEnvironment(), .04).texture; world.environmentIntensity = .7;
+    const key = new THREE.DirectionalLight(0xfff4e8, 2.2); key.position.set(.5, 1.1, .7); key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 6; key.shadow.bias = -.0004; key.shadow.normalBias = .002;
     Object.assign(key.shadow.camera, { left: -.45, right: .45, top: .45, bottom: -.45, near: .1, far: 3 });
     const rim = new THREE.DirectionalLight(0xffb27a, 1.6); rim.position.set(-.8, .5, -.9);
@@ -66,9 +66,9 @@ try {
     const floor = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), new THREE.ShadowMaterial({ opacity: .55 }));
     floor.rotation.x = -Math.PI / 2; floor.position.y = FLOOR; floor.receiveShadow = true; world.add(floor);
 
-    const paint = new THREE.MeshPhysicalMaterial({ color: 0xf1efea, roughness: .32, clearcoat: 1, clearcoatRoughness: .06 });
-    const alu = new THREE.MeshPhysicalMaterial({ color: 0xc8c6c1, metalness: 1, roughness: .3 });
-    const graphite = new THREE.MeshPhysicalMaterial({ color: 0x1b1b1e, metalness: .55, roughness: .42, clearcoat: .4 });
+    const paint = new THREE.MeshPhysicalMaterial({ color: 0xe6e4df, roughness: .5, clearcoat: .6, clearcoatRoughness: .22 });
+    const alu = new THREE.MeshPhysicalMaterial({ color: 0xd2d0cb, metalness: 1, roughness: .42 });   // satin, so the studio boxes don't show as blotches
+    const graphite = new THREE.MeshPhysicalMaterial({ color: 0x222225, metalness: .25, roughness: .55, clearcoat: .35, clearcoatRoughness: .3 });
     const orange = new THREE.MeshPhysicalMaterial({ color: 0xff7a2a, roughness: .35, clearcoat: .8, clearcoatRoughness: .1 });
     const MAT = [graphite, paint, alu, paint, alu, graphite, alu, alu, graphite];   // base, turret, upper arm, elbow, fork, gripper, fingers x2, wrist
 
@@ -87,11 +87,11 @@ try {
     const fingerRest = [parts[6].position.z, parts[7].position.z];
 
     const ball = new THREE.Mesh(new THREE.SphereGeometry(BALL_R, 48, 32), orange); ball.castShadow = true; world.add(ball);
-    const stand = new THREE.Mesh(new THREE.CylinderGeometry(.018, .024, STAND_H, 48), graphite);
+    const stand = new THREE.Mesh(new THREE.CylinderGeometry(.018, .024, STAND_H - .004, 48), graphite);
     const standCap = new THREE.Mesh(new THREE.CylinderGeometry(.022, .022, .004, 48), alu);
     // where the pinch point lands for a base angle, reach and height (includes the gripper's sideways offset)
     const polar = (deg_, r, y) => { const c = Math.cos(rad(deg_)), n = Math.sin(rad(deg_)); return new THREE.Vector3(PX * c + r * n, y, -PX * n + r * c); };
-    stand.position.copy(polar(PLACE, REACH, FLOOR + STAND_H / 2)); standCap.position.copy(polar(PLACE, REACH, FLOOR + STAND_H - .002));
+    stand.position.copy(polar(PLACE, REACH, FLOOR + (STAND_H - .004) / 2)); standCap.position.copy(polar(PLACE, REACH, FLOOR + STAND_H - .002));
     stand.castShadow = stand.receiveShadow = standCap.castShadow = true; world.add(stand, standCap);
     const pinch = new THREE.Object3D(); pinch.position.set(PX, -GRIP, PZ); wr.add(pinch);
 

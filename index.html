@@ -77,7 +77,8 @@
     </nav>
     <a class="wordmark" href="#top" aria-label="Julius Gerhardus, back to top">Julius Gerhardus</a>
     <div class="nav-right">
-        <a class="pill pill--light" href="https://github.com/SnapBanane" target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a class="pill nav-gh" href="https://github.com/SnapBanane" target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a class="pill pill--light" href="#contact">Contact</a>
     </div>
 </header>
 
@@ -126,8 +127,8 @@
             <div class="row reveal">
                 <span class="n">01</span>
                 <h3>Team lead, BohleBots</h3>
-                <p>I lead our school's robotics team: planning the season, splitting the work between hardware and software, and keeping everyone on track for competition day.</p>
-                <span class="meta">Leadership<br>BohleBots SSL</span>
+                <p>Three years leading our school's robotics team, with success every season: third place at the German championship in 2025 and 2026, and qualification for the 2026 European championship. Next goal: the 2027 world championship.</p>
+                <span class="meta">Leadership<br>3 seasons</span>
                 <span></span>
             </div>
             <div class="row reveal">
@@ -144,36 +145,29 @@
                 <span class="meta">Python<br>Prototype</span>
                 <span></span>
             </div>
-            <div class="row reveal">
-                <span class="n">04</span>
-                <h3>Ra bridge</h3>
-                <p>Lets the strategy software drive our ESP32 robot over UDP with minimal delay. Speed scaling is calibrated against the vision camera, and the camera stands in for the light barrier the robot doesn't have.</p>
-                <span class="meta">Python<br>Standard library only</span>
-                <span></span>
-            </div>
             <a class="row reveal" href="https://github.com/bohlebots-pompeii/MB_Circuit_2026" target="_blank" rel="noreferrer">
-                <span class="n">05</span>
+                <span class="n">04</span>
                 <h3>Robot firmware</h3>
                 <p>Firmware for our ESP32 robot: a dedicated motion controller with tuned PID loops, positioning, world state and remote control over Wi-Fi.</p>
                 <span class="meta">C++20 · PlatformIO<br>2026</span>
                 <span class="go" aria-hidden="true">↗</span>
             </a>
             <div class="row reveal">
-                <span class="n">06</span>
+                <span class="n">05</span>
                 <h3>Mitauri</h3>
                 <p>A personal AI assistant that lives in Discord DMs and runs on my own machine, built from modules that can be switched on and off.</p>
                 <span class="meta">Python · AI<br>Private</span>
                 <span></span>
             </div>
             <a class="row reveal" href="https://github.com/SnapBanane/AirDropReworked" target="_blank" rel="noreferrer">
-                <span class="n">07</span>
+                <span class="n">06</span>
                 <h3>AirDrop Reworked</h3>
                 <p>AirDrop-style file sharing that works across Windows, Android and macOS.</p>
                 <span class="meta">Python<br>2026</span>
                 <span class="go" aria-hidden="true">↗</span>
             </a>
             <a class="row reveal" href="https://github.com/SnapBanane/DoomStyle" target="_blank" rel="noreferrer">
-                <span class="n">08</span>
+                <span class="n">07</span>
                 <h3>DoomStyle</h3>
                 <p>A retro first-person shooter for the browser, written in plain JavaScript.</p>
                 <span class="meta">JavaScript<br>2025</span>
@@ -223,8 +217,30 @@
             <span class="n">[3]</span>
             <h2>Open <em>source</em></h2>
         </div>
-        <ul class="repo-list" id="repoList"></ul>
-        <p class="status" id="repoStatus"><a href="https://github.com/SnapBanane?tab=repositories" target="_blank" rel="noreferrer">Browse all repositories on GitHub ↗</a></p>
+        <!-- static on purpose: no visitor request goes to GitHub/GitLab APIs (privacy), nothing to rate-limit -->
+        <div class="repo-group reveal" style="--i:0">
+            <h3>BohleBots SSL · Small Size League · <a href="https://gitlab.com/bohlebots-ssl" target="_blank" rel="noreferrer">GitLab ↗</a></h3>
+            <ul class="repo-list">
+                <li><a class="leader" href="https://gitlab.com/bohlebots-ssl/software/strategy" target="_blank" rel="noreferrer"><span class="name">software/strategy</span><span class="dots"></span><span class="t">C++ · 2026</span></a></li>
+                <li><a class="leader" href="https://gitlab.com/bohlebots-ssl/software/ssl-framework" target="_blank" rel="noreferrer"><span class="name">software/ssl-framework</span><span class="dots"></span><span class="t">JavaScript · 2026</span></a></li>
+                <li><a class="leader" href="https://gitlab.com/bohlebots-ssl/software/example_strategy" target="_blank" rel="noreferrer"><span class="name">software/example_strategy</span><span class="dots"></span><span class="t">C++ · 2026</span></a></li>
+                <li><a class="leader" href="https://gitlab.com/bohlebots-ssl/software/ssl-main-pcb" target="_blank" rel="noreferrer" title="Firmware for the main PCB"><span class="name">software/ssl-main-pcb</span><span class="dots"></span><span class="t">C · 2026</span></a></li>
+                <li><a class="leader" href="https://gitlab.com/bohlebots-ssl/electronics/ssl-main-pcb" target="_blank" rel="noreferrer" title="Main PCB design"><span class="name">electronics/ssl-main-pcb</span><span class="dots"></span><span class="t">PCB · 2026</span></a></li>
+            </ul>
+        </div>
+        <div class="repo-group reveal" style="--i:1">
+            <h3>BohleBots Pompeii · RoboCup Junior Soccer · <a href="https://github.com/bohlebots-pompeii" target="_blank" rel="noreferrer">GitHub ↗</a></h3>
+            <ul class="repo-list">
+                <li><a class="leader" href="https://github.com/bohlebots-pompeii/MB_Circuit_2026" target="_blank" rel="noreferrer" title="Main controlling ESP code, RoboCup Junior Soccer 2v2 LWL"><span class="name">MB_Circuit_2026</span><span class="dots"></span><span class="t">C++ · 2026</span></a></li>
+                <li><a class="leader" href="https://github.com/bohlebots-pompeii/Motordriver_Circuit_2026" target="_blank" rel="noreferrer"><span class="name">Motordriver_Circuit_2026</span><span class="dots"></span><span class="t">C++ · 2026</span></a></li>
+                <li><a class="leader" href="https://github.com/bohlebots-pompeii/Mechanical_2026" target="_blank" rel="noreferrer" title="Mechanical design of the robot"><span class="name">Mechanical_2026</span><span class="dots"></span><span class="t">CAD · 2026</span></a></li>
+                <li><a class="leader" href="https://github.com/bohlebots-pompeii/phoenix" target="_blank" rel="noreferrer"><span class="name">phoenix</span><span class="dots"></span><span class="t">Rust · 2026</span></a></li>
+                <li><a class="leader" href="https://github.com/bohlebots-pompeii/bohlebots-pompeii.github.io" target="_blank" rel="noreferrer" title="Team website"><span class="name">bohlebots-pompeii.github.io</span><span class="dots"></span><span class="t">Website · 2026</span></a></li>
+                <li><a class="leader" href="https://github.com/bohlebots-pompeii/LineSensor_2026" target="_blank" rel="noreferrer"><span class="name">LineSensor_2026</span><span class="dots"></span><span class="t">C++ · 2025</span></a></li>
+                <li><a class="leader" href="https://github.com/bohlebots-pompeii/US_Circuit_2026" target="_blank" rel="noreferrer"><span class="name">US_Circuit_2026</span><span class="dots"></span><span class="t">C++ · 2025</span></a></li>
+                <li><a class="leader" href="https://github.com/bohlebots-pompeii/1v1_lwl_2025" target="_blank" rel="noreferrer"><span class="name">1v1_lwl_2025</span><span class="dots"></span><span class="t">C++ · 2025</span></a></li>
+            </ul>
+        </div>
     </section>
 
     <!-- ============ ABOUT ============ -->
@@ -235,23 +251,25 @@
         </div>
         <div class="about">
             <div class="reveal">
-                <p class="lead">I'm Julius Gerhardus, a student in Germany and team lead of BohleBots SSL. I started in RoboCup Junior and now play in the Small Size League, where the robots are faster and the software does far more of the work.</p>
-                <p class="body">Most of my time goes into strategy code and the tools around it. I also write firmware in C++, build things in Python, and keep a few side projects going when the robots are charging.</p>
+                <p class="lead">I'm Julius Gerhardus, a student in Germany, and I've led our school's robotics team, BohleBots, for three years. We started in RoboCup Junior and now play in the Small Size League, where the robots are faster and the software does far more of the work.</p>
+                <p class="body">Most of my time goes into strategy code and the tools around it. I also write firmware in C++, build things in Python, and keep a few side projects going when the robots are charging. Away from the robots, I spent several years in my school's film club and now run sound as head sound engineer of the school's stage crew.</p>
             </div>
             <dl class="facts reveal" style="--i:1">
                 <div><dt>Team</dt><dd>BohleBots SSL</dd></div>
-                <div><dt>Role</dt><dd>Team lead</dd></div>
+                <div><dt>Role</dt><dd>Team lead, 3 years</dd></div>
+                <div><dt>Results</dt><dd>3rd, German championship 2025 &amp; 2026<br>European championship qualifier 2026</dd></div>
                 <div><dt>League</dt><dd>RoboCup SSL, Division B</dd></div>
                 <div><dt>Before</dt><dd>RoboCup Junior Soccer</dd></div>
+                <div><dt>Also</dt><dd>Head of sound, school stage crew</dd></div>
                 <div><dt>School</dt><dd><a href="https://gymhaan.de" target="_blank" rel="noreferrer">Gymnasium Haan</a></dd></div>
                 <div><dt>Based in</dt><dd>Germany</dd></div>
             </dl>
         </div>
     </section>
 
-    <div class="closing">
+    <div class="closing" id="contact">
          <h2 class="reveal">See you <em>on the field.</em></h2>
-        <p class="reveal" style="--i:1">For sponsoring, internships or questions about the team, email me. The public code is on GitHub.</p>
+        <p class="reveal" style="--i:1">Interested in sponsoring, internships, or just have questions about the team? Feel free to reach out via email. You can also check out our public code on GitHub.</p>
         <div class="reveal cta" style="--i:2"><a class="pill pill--light js-mail" href="#about">julius [at] gerhardus.com</a> <a class="pill" href="https://github.com/SnapBanane" target="_blank" rel="noreferrer">GitHub ↗</a></div>
     </div>
 </main>

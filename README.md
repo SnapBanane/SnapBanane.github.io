@@ -10,9 +10,10 @@ Plain static HTML, CSS and JavaScript served by GitHub Pages. No build step, no 
 index.html              home page
 impressum.html          legal notice (§ 5 DDG)
 datenschutz.html        privacy policy (DSGVO)
+404.html                not-found page (root-absolute URLs: GitHub Pages serves it at any path)
 assets/
   css/main.css          all styles (shared by every page)
-  js/main.js            nav, scroll reveal, email link, GitHub repo list
+  js/main.js            nav, scroll reveal, email link, hero glow
   js/arm.js             3D robot arm (ES module, three.js)
   fonts/                self-hosted web fonts (no Google Fonts requests)
   models/robot-arm.glb  robot arm geometry
@@ -32,4 +33,4 @@ python -m http.server 8000
 
 ## Privacy
 
-Every asset is served from this site. The only requests to a third party are the GitHub API call for the repository list, and that goes to GitHub, which already hosts the site. If you add an external resource (fonts, analytics, embeds), update `datenschutz.html` first.
+Every asset is served from this site, and the page makes no requests to third parties (the repo list is static HTML on purpose). If you add an external resource (fonts, analytics, embeds, live API calls), update `datenschutz.html` first.
